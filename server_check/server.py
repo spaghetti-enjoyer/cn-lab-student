@@ -12,15 +12,23 @@ FAILED_TO_SEND = 1
 clients = {} # socket -> username
 
 def receive_from_socket(sock):
-    print('hafiahf: ', sock.recv(1).decode("utf-8"))
-    response = ""
+    # print('hafiahf: ', sock.recv(1).decode("utf-8"))
+    response = sock.recv(1).decode("utf-8")
+
+    print("response:", response, '.', sep='|')
+
+    if response == None:
+        print(f"Client {sock} has disconnected")
+        sock.close()
+        del clients[sock]
+
+    if response == "":
+        print(f"Client {sock} has disconnecteddd")
+        sock.close()
+        del clients[sock]
+
     while "\n" not in response:
         response += sock.recv(1).decode("utf-8")
-
-    # if response == "":
-    #     print(f"Client {sock} has disconnected")
-    #     sock.close()
-    #     del clients[sock]
     return response
 
 
